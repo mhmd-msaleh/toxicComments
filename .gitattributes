@@ -1,2 +1,3 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+data model project.ipynb proposal README.md sagemaker_data text=auto
