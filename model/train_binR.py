@@ -1,3 +1,5 @@
+# !pip install scikit-multilearn 
+
 from __future__ import print_function
 
 import argparse
@@ -11,7 +13,7 @@ from sklearn.externals import joblib
 
 ## TODO: Import any additional libraries you need to define a model
 #from sklearn.linear_model import LogisticRegression
-from skmultilearn.problem_transform import BinaryRelevance
+
 from sklearn.naive_bayes import MultinomialNB
 # Provided model load function
 def model_fn(model_dir):
@@ -26,13 +28,21 @@ def model_fn(model_dir):
     
     return model
 
+import subprocess
+import sys
 
-## TODO: Complete the main code
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+
+
+
 if __name__ == '__main__':
     
     # All of the model parameters and training parameters are sent as arguments
     # when this script is executed, during a training job
-    
+    install('scikit-multilearn')
+    from skmultilearn.problem_transform import BinaryRelevance
     # Here we set up an argument parser to easily access the parameters
     parser = argparse.ArgumentParser()
 
@@ -43,8 +53,6 @@ if __name__ == '__main__':
     print('SM_TRAIN is ',os.environ['SM_CHANNEL_TRAINING'])
     parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAINING'])
     
-    ## TODO: Add any additional arguments that you will need to pass into your model
-    
     # args holds all passed-in arguments
     args = parser.parse_args()
 
@@ -53,25 +61,18 @@ if __name__ == '__main__':
     print(training_dir)
     train_data = pd.read_csv(os.path.join(training_dir, "train.csv"), header=None, names=None)
 
-    # Labels are in the first column
-    train_y = train_data.iloc[:,0]
-    train_x = train_data.iloc[:,1:]
-    
-    
-    ## --- Your code here --- ##
+    # comments are in first column and rest are labels
+    train_x = train_data.iloc[:,0]
+    train_y = train_data.iloc[:,1:]
     
 
-    ## TODO: Define a model 
-#     model = LogisticRegression(solver='liblinear', class_weight='balanced', n_jobs=-1)
+    ## Define a model 
     
     model = BinaryRelevance(MultinomialNB())
     
     
-    ## TODO: Train the model
+    ## Train the model
     model.fit(train_x, train_y)
-    
-    
-    ## --- End of your code  --- ##
     
 
     # Save the trained model
