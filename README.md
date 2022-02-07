@@ -1,6 +1,9 @@
 # Toxic Comment Classification 
 ##### Machine Learning Enagineering Nanodegree Capstone Project
 
+### Proposal review link: 
+https://review.udacity.com/#!/reviews/3385924
+
 
 ## Project Overview
 ### Project Domain
